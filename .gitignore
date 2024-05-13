@@ -1,0 +1,6 @@
+# Nix
+result*
+build/
+
+# Misc
+.direnv

@@ -1,0 +1,7 @@
+CompileFlags:
+  Add: [-Wall, -Iinclude, -D NCURSES_WIDECHAR, -lncurses]
+
+Diagnostics:
+  UnusedIncludes: Strict
+  ClangTidy:
+    Add: performance*
