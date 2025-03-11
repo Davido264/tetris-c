@@ -1,5 +1,4 @@
 #include <stdlib.h>
-
 #include "../include/data_structures.h"
 #include "../include/tetromino.h"
 
@@ -58,4 +57,29 @@ void lrotate_tetromino(Tetromino *fig) {
     top++;
     bottom--;
   }
+}
+
+char last_genetared_type[3];
+Tetromino *get_rnd_tetromino() {
+  int color = rand() % MAX_COLOR_COUNT;
+  int tetromino_type;
+  char repeated = 1;
+
+  do {
+    tetromino_type = rand() % MAX_TETROMINO_TYPE_COUNT;
+
+    for (int i = 0; i < 3; i++) {
+      repeated = repeated && (tetromino_type == last_genetared_type[i]);
+    }
+
+    if (!repeated) {
+      // shift the array
+      for (int i = 0; i < 2; i++) {
+        last_genetared_type[i + 1] = last_genetared_type[i];
+      }
+      last_genetared_type[0] = tetromino_type;
+    }
+  } while (repeated);
+
+  return get_tetromino(tetromino_type, color);
 }

@@ -9,6 +9,7 @@ typedef Pixel Tetromino[4][4];
 typedef enum { L, J, O, I, S, Z, T } TetrominoType;
 
 Tetromino *get_tetromino(TetrominoType type, Color color);
+Tetromino *get_rnd_tetromino();
 void lrotate_tetromino(Tetromino *fig);
 
 #endif

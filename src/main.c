@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-int main() {
-  srand(time(NULL));
+int main() { 
   setlocale(LC_ALL, "");
+  srand(time(NULL));
 
   WINDOW *master = initscr();
   noecho();
@@ -32,41 +32,39 @@ int main() {
   box(w, 0, 0);
   refresh();
 
+  // keep the last 3 to show
   Tetromino *figs[3];
-  char last_genetared_type[3];
-
-  int color = rand() % MAX_COLOR_COUNT;
-  int tetromino_type = rand() % MAX_TETROMINO_TYPE_COUNT;
-
-  // to lazy to do a function that checks this with a cycle xd
-  // TODO: do the thing I just said I'm too lazy to
-  // TODO: Implement a queue with a has function
-  while (tetromino_type == last_genetared_type[0] ||
-         tetromino_type == last_genetared_type[1] ||
-         tetromino_type == last_genetared_type[2]) {
-    tetromino_type = rand() % MAX_TETROMINO_TYPE_COUNT;
+  for (int i = 0; i < 3; i++) {
+    figs[i] = get_rnd_tetromino();
   }
 
-  figs[0] = get_tetromino(L, RED);
-  figs[1] = get_tetromino(J, BLUE);
-  figs[2] = get_tetromino(O, RED);
-  figs[3] = get_tetromino(I, YELLOW);
-  figs[4] = get_tetromino(S, RED);
-  figs[5] = get_tetromino(Z, GREEN);
-  figs[6] = get_tetromino(T, WHITE);
+  char next_value = 1;
+  char repeat = 1;
+  while (repeat) {
+    Tetromino *current = figs[0];
+    render_tetromino(10, 10, current, w);
 
-  int i = 0;
-  while (i < 7) {
-    render_tetromino(10, 10, figs[i], w);
     switch (wgetch(w)) {
     case ' ':
-      lrotate_tetromino(figs[i]);
+      lrotate_tetromino(current);
+      next_value = 0;
       break;
-    case KEY_ENTER:
+    case 'q':
+      repeat = 0;
+      break;
     default:
-      free(figs[i]);
-      i++;
+      free(current);
+      next_value = 1;
       break;
+    }
+
+
+    if (next_value) {
+      // shift and generate new
+      for (int i = 0; i < 2; i++) {
+        figs[i] = figs[i + 1];
+      }
+      figs[2] = get_rnd_tetromino();
     }
   }
 

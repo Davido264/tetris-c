@@ -1,6 +1,6 @@
-# Nix
-result*
 build/
+coredump/
+tetris-c
 
 # Misc
 .direnv
